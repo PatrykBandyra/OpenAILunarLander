@@ -503,31 +503,61 @@ def heuristic(env, s):
     return a
 
 
+# def demo_heuristic_lander(env, seed=None, render=False):
+#     env.seed(seed)
+#     total_reward = 0
+#     steps = 0
+#     s = env.reset()
+#     while True:
+#         a = heuristic(env, s)
+#         s, r, done, info = env.step(a)
+#         total_reward += r
+#
+#         if render:
+#             still_open = env.render()
+#             if still_open == False:
+#                 break
+#
+#         if steps % 20 == 0 or done:
+#             print("observations:", " ".join([f"{x:+0.2f}" for x in s]))
+#             print(f"step {steps} total_reward {total_reward:+0.2f}")
+#         steps += 1
+#         if done:
+#             break
+#     if render:
+#         env.close()
+#     return total_reward
+
+
 def demo_heuristic_lander(env, seed=None, render=False):
     env.seed(seed)
-    total_reward = 0
-    steps = 0
-    s = env.reset()
-    while True:
-        a = heuristic(env, s)
-        s, r, done, info = env.step(a)
-        total_reward += r
+    rewards = []
+    for i in range(100):
+        env.reset()
+        total_reward = 0
+        steps = 0
+        s = env.reset()
+        while True:
+            a = heuristic(env, s)
+            s, r, done, info = env.step(a)
+            total_reward += r
 
-        if render:
-            still_open = env.render()
-            if still_open == False:
+            if render:
+                still_open = env.render()
+                if still_open == False:
+                    break
+
+            if steps % 20 == 0 or done:
+                print("observations:", " ".join([f"{x:+0.2f}" for x in s]))
+                print(f"step {steps} total_reward {total_reward:+0.2f}")
+            steps += 1
+            if done:
                 break
-
-        if steps % 20 == 0 or done:
-            print("observations:", " ".join([f"{x:+0.2f}" for x in s]))
-            print(f"step {steps} total_reward {total_reward:+0.2f}")
-        steps += 1
-        if done:
-            break
-    if render:
-        env.close()
-    return total_reward
+        if render:
+            env.close()
+        rewards.append(total_reward)
+    print(f'Average: {np.mean(np.array(rewards))}')
 
 
 if __name__ == "__main__":
-    demo_heuristic_lander(LunarLander(), render=True)
+    demo_heuristic_lander(LunarLander(), render=False)
