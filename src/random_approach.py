@@ -1,31 +1,22 @@
 import gym
-import torch
 import numpy as np
 import random
-from agent import Agent
 from config import *
 
 
 """
-This file contains simulation of our Agent behaviour in OpenAi environment (LunarLander-v2). 
-Agent state is loaded from external files.
-
-The main goal of our Agent is to land the spacecraft in the place between two flags and receive 
-the highest possible score.
+This file contains simulation of random approach to given task of landing a spacecraft between two flags.
+Actions are taken randomly.
 """
 
 
 if __name__ == '__main__':
     # Set seeds
-    torch.manual_seed(SEED)  # Sets up seed for both devices
     np.random.seed(SEED)
     random.seed(SEED)
 
     env = gym.make('LunarLander-v2')
     env.seed(SEED)
-    agent = Agent(gamma=GAMMA, eps=0, eps_min=EPS_MIN, eps_dec=EPS_DEC, lr=LEARNING_RATE, batch_size=BATCH_SIZE,
-                  n_actions=NUM_ENV_ACTIONS, input_dims=NUM_ENV_VARIABLES, mem_size=MEMORY_SIZE)
-    agent.load_agent()
 
     scores = []
 
@@ -35,7 +26,7 @@ if __name__ == '__main__':
         for t in range(1000):
             env.render()
 
-            action = agent.choose_action(observation)
+            action = env.action_space.sample()
 
             observation, reward, done, info = env.step(action)
 

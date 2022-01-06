@@ -104,13 +104,13 @@ class Agent:
         Saves state of agent and model in files.
         """
         torch.save(self.q_eval.state_dict(), 'model.tar')
-        np.save('state_memory.npy', self.state_memory)
-        np.save('new_state_memory.npy', self.new_state_memory)
-        np.save('action_memory.npy', self.action_memory)
-        np.save('reward_memory.npy', self.reward_memory)
-        np.save('terminal_memory.npy', self.terminal_memory)
+        np.save('data/state_memory.npy', self.state_memory)
+        np.save('data/new_state_memory.npy', self.new_state_memory)
+        np.save('data/action_memory.npy', self.action_memory)
+        np.save('data/reward_memory.npy', self.reward_memory)
+        np.save('data/terminal_memory.npy', self.terminal_memory)
         data = {'eps': self.eps, 'mem_cntr': self.mem_cntr}
-        with open('agent_data.json', 'w') as f:
+        with open('data/agent_data.json', 'w') as f:
             json.dump(data, f)
 
     def load_agent(self):
@@ -119,12 +119,12 @@ class Agent:
         """
         try:
             self.q_eval.load_state_dict(torch.load('model.tar'))
-            self.state_memory = np.load('state_memory.npy')
-            self.new_state_memory = np.load('new_state_memory.npy')
-            self.action_memory = np.load('action_memory.npy')
-            self.reward_memory = np.load('reward_memory.npy')
-            self.terminal_memory = np.load('terminal_memory.npy')
-            with open('agent_data.json', 'r') as f:
+            self.state_memory = np.load('data/state_memory.npy')
+            self.new_state_memory = np.load('data/new_state_memory.npy')
+            self.action_memory = np.load('data/action_memory.npy')
+            self.reward_memory = np.load('data/reward_memory.npy')
+            self.terminal_memory = np.load('data/terminal_memory.npy')
+            with open('data/agent_data.json', 'r') as f:
                 data = json.load(f)
                 self.eps = data['eps']
                 self.mem_cntr = data['mem_cntr']
