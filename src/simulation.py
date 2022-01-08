@@ -23,29 +23,33 @@ if __name__ == '__main__':
 
     env = gym.make('LunarLander-v2')
     env.seed(SEED)
-    agent = Agent(gamma=GAMMA, eps=0, eps_min=EPS_MIN, eps_dec=EPS_DEC, lr=LEARNING_RATE, batch_size=BATCH_SIZE,
-                  n_actions=NUM_ENV_ACTIONS, input_dims=NUM_ENV_VARIABLES, mem_size=MEMORY_SIZE)
-    agent.load_agent()
 
-    scores = []
+    with torch.no_grad():
 
-    for game in range(10):
-        observation = env.reset()
-        score = 0
-        for t in range(1000):
-            env.render()
+        agent = Agent(gamma=GAMMA, eps=0, eps_min=EPS_MIN, eps_dec=EPS_DEC, lr=LEARNING_RATE, batch_size=BATCH_SIZE,
+                      n_actions=NUM_ENV_ACTIONS, input_dims=NUM_ENV_VARIABLES, mem_size=MEMORY_SIZE)
+        agent.load_agent()
+        agent.q_eval.eval()
 
-            action = agent.choose_action(observation)
+        scores = []
 
-            observation, reward, done, info = env.step(action)
+        for game in range(10):
+            observation = env.reset()
+            score = 0
+            for t in range(1000):
+                env.render()
 
-            score += reward
+                action = agent.choose_action(observation)
 
-            if done:
-                break
+                observation, reward, done, info = env.step(action)
 
-        scores.append(score)
-        print(f'Game[{game}] - Score: {score}')
+                score += reward
+
+                if done:
+                    break
+
+            scores.append(score)
+            print(f'Game[{game}] - Score: {score}')
 
     print(f'Average score: {np.round(np.mean(scores), 2)}')
 

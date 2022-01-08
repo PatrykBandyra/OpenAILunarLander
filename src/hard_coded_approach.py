@@ -57,11 +57,11 @@ if __name__ == '__main__':
 
     scores = []
 
-    for game in range(10):
+    for game in range(1000):
         observation = env.reset()
         score = 0
         for t in range(1000):
-            env.render()
+            # env.render()
 
             action = heuristic(env, observation)
 
@@ -73,7 +73,7 @@ if __name__ == '__main__':
                 break
 
         scores.append(score)
-        print(f'Game[{game}] - Score: {score}')
+        # print(f'Game[{game}] - Score: {score}')
 
     print(f'Average score: {np.round(np.mean(scores), 2)}')
 

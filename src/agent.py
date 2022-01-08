@@ -53,9 +53,11 @@ class Agent:
             state = torch.tensor([observation]).to(self.q_eval.device)
             actions = self.q_eval.forward(state)
             action = torch.argmax(actions).item()
+
         # Choose action randomly - exploration
         else:
             action = np.random.choice(self.action_space)
+
         return action
 
     def learn(self):
@@ -99,32 +101,32 @@ class Agent:
         # Decrease exploration by given step with each learning loop - linear decrease
         self.eps = self.eps - self.eps_dec if self.eps > self.eps_min else self.eps_min
 
-    def save_agent(self):
+    def save_agent(self, filename_suffix=''):
         """
         Saves state of agent and model in files.
         """
-        torch.save(self.q_eval.state_dict(), 'model.tar')
-        np.save('data/state_memory.npy', self.state_memory)
-        np.save('data/new_state_memory.npy', self.new_state_memory)
-        np.save('data/action_memory.npy', self.action_memory)
-        np.save('data/reward_memory.npy', self.reward_memory)
-        np.save('data/terminal_memory.npy', self.terminal_memory)
+        torch.save(self.q_eval.state_dict(), f'data/model{filename_suffix}.tar')
+        np.save(f'data/state_memory{filename_suffix}.npy', self.state_memory)
+        np.save(f'data/new_state_memory{filename_suffix}.npy', self.new_state_memory)
+        np.save(f'data/action_memory{filename_suffix}.npy', self.action_memory)
+        np.save(f'data/reward_memory{filename_suffix}.npy', self.reward_memory)
+        np.save(f'data/terminal_memory{filename_suffix}.npy', self.terminal_memory)
         data = {'eps': self.eps, 'mem_cntr': self.mem_cntr}
-        with open('data/agent_data.json', 'w') as f:
+        with open(f'data/agent_data{filename_suffix}.json', 'w') as f:
             json.dump(data, f)
 
-    def load_agent(self):
+    def load_agent(self, filename_suffix=''):
         """
         Loads state of agent and model from files.
         """
         try:
-            self.q_eval.load_state_dict(torch.load('model.tar'))
-            self.state_memory = np.load('data/state_memory.npy')
-            self.new_state_memory = np.load('data/new_state_memory.npy')
-            self.action_memory = np.load('data/action_memory.npy')
-            self.reward_memory = np.load('data/reward_memory.npy')
-            self.terminal_memory = np.load('data/terminal_memory.npy')
-            with open('data/agent_data.json', 'r') as f:
+            self.q_eval.load_state_dict(torch.load(f'data/model{filename_suffix}.tar'))
+            self.state_memory = np.load(f'data/state_memory{filename_suffix}.npy')
+            self.new_state_memory = np.load(f'data/new_state_memory{filename_suffix}.npy')
+            self.action_memory = np.load(f'data/action_memory{filename_suffix}.npy')
+            self.reward_memory = np.load(f'data/reward_memory{filename_suffix}.npy')
+            self.terminal_memory = np.load(f'data/terminal_memory{filename_suffix}.npy')
+            with open(f'data/agent_data{filename_suffix}.json', 'r') as f:
                 data = json.load(f)
                 self.eps = data['eps']
                 self.mem_cntr = data['mem_cntr']

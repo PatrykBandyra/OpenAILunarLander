@@ -26,7 +26,8 @@ if __name__ == '__main__':
         for t in range(1000):
             env.render()
 
-            action = env.action_space.sample()
+            # action = env.action_space.sample()
+            action = np.random.choice([0, 1, 2, 3])  # To guarantee repeatability
 
             observation, reward, done, info = env.step(action)
 
