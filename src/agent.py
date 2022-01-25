@@ -1,7 +1,7 @@
 import numpy as np
 import torch
 import json
-from model import Model
+from model import *
 
 
 class Agent:
