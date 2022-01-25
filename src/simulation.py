@@ -5,7 +5,6 @@ import random
 from agent import Agent
 from config import *
 
-
 """
 This file contains simulation of our Agent behaviour in OpenAi environment (LunarLander-v2). 
 Agent state is loaded from external files.
@@ -27,7 +26,8 @@ def main(model_name=None, model_suffix='', lr=LEARNING_RATE):
     with torch.no_grad():
 
         agent = Agent(gamma=GAMMA, eps=0, eps_min=EPS_MIN, eps_dec=EPS_DEC, lr=lr, batch_size=BATCH_SIZE,
-                      n_actions=NUM_ENV_ACTIONS, input_dims=NUM_ENV_VARIABLES, mem_size=MEMORY_SIZE, model_name=model_name)
+                      n_actions=NUM_ENV_ACTIONS, input_dims=NUM_ENV_VARIABLES, mem_size=MEMORY_SIZE,
+                      model_name=model_name)
         agent.load_agent(model_suffix)
         agent.q_eval.eval()
 
@@ -54,6 +54,7 @@ def main(model_name=None, model_suffix='', lr=LEARNING_RATE):
     print(f'Average score: {np.round(np.mean(scores), 2)}')
 
     env.close()
+
 
 if __name__ == '__main__':
     main()
