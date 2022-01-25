@@ -47,7 +47,7 @@ def heuristic(env, observation):
     return a
 
 
-if __name__ == '__main__':
+def main():
     # Set seeds
     np.random.seed(SEED)
     random.seed(SEED)
@@ -78,3 +78,6 @@ if __name__ == '__main__':
     print(f'Average score: {np.round(np.mean(scores), 2)}')
 
     env.close()
+
+if __name__ == '__main__':
+    main()
