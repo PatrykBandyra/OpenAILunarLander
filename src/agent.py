@@ -25,7 +25,7 @@ class Agent:
         if not model_name:
             self.q_eval = Model(lr, input_dims=input_dims, n_actions=n_actions)  # Model representing Q-table
         else:
-            self.q_eval = globals()[model_name]()
+            self.q_eval = globals()[model_name](lr, input_dims=input_dims, n_actions=n_actions)
 
         # State memory stores observations received from environment
         self.state_memory = np.zeros((self.mem_size, input_dims), dtype=np.float32)
