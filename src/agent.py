@@ -10,7 +10,8 @@ class Agent:
     (represented in form of Q-table).
     """
 
-    def __init__(self, gamma, eps, eps_min, eps_dec, lr, input_dims, batch_size, n_actions, mem_size):
+    def __init__(self, gamma, eps, eps_min, eps_dec, lr, input_dims, batch_size, n_actions, mem_size,
+                 model_name: str = None):
         self.gamma = gamma  # Discount
         self.eps = eps  # Probability of not choosing the best action in current state
         self.eps_min = eps_min  # Minimal value of eps
@@ -21,7 +22,11 @@ class Agent:
         self.batch_size = batch_size  # Size of data batch that Model operates on
         self.mem_cntr = 0  # Keeps track of position of first available memory
 
-        self.q_eval = Model(lr, input_dims=input_dims, n_actions=n_actions)  # Model representing Q-table
+        if not model_name:
+            self.q_eval = Model(lr, input_dims=input_dims, n_actions=n_actions)  # Model representing Q-table
+        else:
+            self.q_eval = globals()[model_name]()
+
         # State memory stores observations received from environment
         self.state_memory = np.zeros((self.mem_size, input_dims), dtype=np.float32)
         # New state memory stores new observations in order to calculate temporal difference
