@@ -3,7 +3,6 @@ import numpy as np
 import random
 from config import *
 
-
 """
 This file contains simulation of approach based on hard coded "optimal" behaviour in given state.
 Example from official OpenAi GitHub repository.
@@ -14,7 +13,6 @@ GitHub repo: https://github.com/openai/gym/blob/master/gym/envs/box2d/lunar_land
 
 
 def heuristic(env, observation):
-
     angle_targ = observation[0] * 0.5 + observation[2] * 1.0  # angle should point towards center
     if angle_targ > 0.4:
         angle_targ = 0.4  # more than 0.4 radians (22 degrees) is bad
@@ -30,7 +28,7 @@ def heuristic(env, observation):
     if observation[6] or observation[7]:  # legs have contact
         angle_todo = 0
         hover_todo = (
-            -(observation[3]) * 0.5
+                -(observation[3]) * 0.5
         )  # override to reduce fall speed, that's all we need after contact
 
     if env.continuous:
@@ -78,6 +76,7 @@ def main():
     print(f'Average score: {np.round(np.mean(scores), 2)}')
 
     env.close()
+
 
 if __name__ == '__main__':
     main()
