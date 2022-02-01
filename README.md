@@ -1,3 +1,3 @@
-# POP
+# OpenAI LunarLander
 
-Projekt z przedmiotu POP
+Q-learning + Neural Network
